@@ -2,7 +2,8 @@ import * as LucideIcons from 'lucide-react';
 import { ArrowUpRight } from 'lucide-react';
 import { SERVICES } from '../../data/content';
 import SectionHeader from '../ui/SectionHeader';
-import { StaggerContainer, StaggerItem } from '../ui/Motion';
+import MobileAutoSlider from '../ui/MobileAutoSlider';
+import { StaggerItem } from '../ui/Motion';
 
 export default function Services() {
   return (
@@ -15,15 +16,21 @@ export default function Services() {
           subtitle="From everyday elegance to once-in-a-lifetime bridal couture — discover our full range of bespoke tailoring services."
         />
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(180px,auto)] gap-4 mt-14 md:mt-16">
+        <MobileAutoSlider
+          desktopClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(180px,auto)] gap-4 mt-14 md:mt-16"
+          itemClassName="shrink-0 w-[78vw] max-w-[280px] snap-start"
+          fadeFrom="cream"
+          ariaLabel="Our services"
+          speed={0.35}
+        >
           {SERVICES.map((service) => {
             const Icon = LucideIcons[service.icon] || LucideIcons.Shirt;
             return (
               <StaggerItem
                 key={service.title}
-                className={`group bg-white border border-beige-dark rounded-3xl p-6 flex flex-col justify-between hover:border-gold hover:shadow-gold transition-all duration-300 hover:-translate-y-1 cursor-pointer focus-within:ring-2 focus-within:ring-gold/50 ${
-                  service.wide ? 'sm:col-span-2' : ''
-                } ${service.tall ? 'sm:row-span-2' : ''}`}
+                className={`group bg-white border border-beige-dark rounded-3xl p-6 flex flex-col justify-between h-full min-h-[200px] hover:border-gold hover:shadow-gold transition-all duration-300 hover:-translate-y-1 cursor-pointer focus-within:ring-2 focus-within:ring-gold/50 ${
+                  service.wide ? 'lg:col-span-2' : ''
+                } ${service.tall ? 'lg:row-span-2' : ''}`}
               >
                 <div>
                   <div className="w-11 h-11 gradient-gold rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -40,7 +47,7 @@ export default function Services() {
               </StaggerItem>
             );
           })}
-        </StaggerContainer>
+        </MobileAutoSlider>
       </div>
     </section>
   );

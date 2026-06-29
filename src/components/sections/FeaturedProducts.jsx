@@ -5,7 +5,8 @@ import { FEATURED_PRODUCTS } from '../../data/content';
 import { PLACEHOLDER_PALETTES } from '../../data/images';
 import SectionHeader from '../ui/SectionHeader';
 import SmartImage from '../ui/SmartImage';
-import { StaggerContainer, StaggerItem } from '../ui/Motion';
+import MobileAutoSlider from '../ui/MobileAutoSlider';
+import { StaggerItem } from '../ui/Motion';
 
 export default function FeaturedProducts() {
   const [preview, setPreview] = useState(null);
@@ -20,10 +21,16 @@ export default function FeaturedProducts() {
           subtitle="Beautifully crafted pieces and premium materials available at our boutique — stitched with the same care as our custom orders."
         />
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mt-14">
+        <MobileAutoSlider
+          desktopClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mt-14"
+          itemClassName="shrink-0 w-[70vw] max-w-[240px] snap-start"
+          fadeFrom="white"
+          ariaLabel="Featured products"
+          speed={0.33}
+        >
           {FEATURED_PRODUCTS.map((product, i) => (
             <StaggerItem key={product.title}>
-              <article className="group relative rounded-3xl overflow-hidden border border-beige-dark hover:border-gold hover:shadow-gold transition-all duration-300 hover:-translate-y-1 bg-cream">
+              <article className="group relative rounded-3xl overflow-hidden border border-beige-dark hover:border-gold hover:shadow-gold transition-all duration-300 hover:-translate-y-1 bg-cream h-full">
                 <div className="aspect-[3/4] relative overflow-hidden">
                   {product.tag && (
                     <span className="absolute top-3 left-3 z-10 text-[9px] tracking-widest uppercase bg-maroon text-cream px-2.5 py-1 rounded-full font-semibold shadow-sm">
@@ -57,7 +64,7 @@ export default function FeaturedProducts() {
               </article>
             </StaggerItem>
           ))}
-        </StaggerContainer>
+        </MobileAutoSlider>
       </div>
 
       <AnimatePresence>

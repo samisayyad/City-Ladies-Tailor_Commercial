@@ -5,7 +5,8 @@ import { GALLERY_CATS, GALLERY_ITEMS } from '../../data/content';
 import { PLACEHOLDER_PALETTES } from '../../data/images';
 import SectionHeader from '../ui/SectionHeader';
 import SmartImage from '../ui/SmartImage';
-import { StaggerContainer, StaggerItem } from '../ui/Motion';
+import MobileAutoSlider from '../ui/MobileAutoSlider';
+import { StaggerItem } from '../ui/Motion';
 
 export default function Gallery() {
   const [filter, setFilter] = useState('All');
@@ -41,12 +42,20 @@ export default function Gallery() {
           ))}
         </div>
 
-        <StaggerContainer className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4" stagger={0.05}>
+        <MobileAutoSlider
+          key={filter}
+          desktopClassName="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4"
+          itemClassName="shrink-0 w-[72vw] max-w-[260px] snap-start"
+          fadeFrom="cream"
+          ariaLabel="Design gallery"
+          speed={0.34}
+          stagger={0.05}
+        >
           {filtered.map((item, i) => (
             <StaggerItem key={`${item.cat}-${item.label}-${i}`}>
               <button
                 type="button"
-                className={`group relative w-full mb-4 break-inside-avoid rounded-2xl overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-gold shadow-sm hover:shadow-luxury transition-shadow ${item.ratio}`}
+                className="group relative w-full h-80 rounded-2xl overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-gold shadow-sm hover:shadow-luxury transition-shadow lg:mb-4 lg:break-inside-avoid"
                 onClick={() => setLightbox(item)}
                 aria-label={`View ${item.label}`}
               >
@@ -73,7 +82,7 @@ export default function Gallery() {
               </button>
             </StaggerItem>
           ))}
-        </StaggerContainer>
+        </MobileAutoSlider>
       </div>
 
       <AnimatePresence>

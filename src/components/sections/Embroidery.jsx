@@ -1,7 +1,8 @@
 import * as LucideIcons from 'lucide-react';
 import { EMBROIDERIES } from '../../data/content';
 import SectionHeader from '../ui/SectionHeader';
-import { StaggerContainer, StaggerItem } from '../ui/Motion';
+import MobileAutoSlider from '../ui/MobileAutoSlider';
+import { StaggerItem } from '../ui/Motion';
 
 export default function Embroidery() {
   return (
@@ -15,12 +16,19 @@ export default function Embroidery() {
           subtitle="Each thread is placed with intention. Explore our range of traditional and contemporary embroidery techniques mastered over decades."
         />
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-14">
+        <MobileAutoSlider
+          desktopClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-14"
+          itemClassName="shrink-0 w-[75vw] max-w-[260px] snap-start"
+          fadeFrom="maroon-dark"
+          hintClassName="text-cream/45"
+          ariaLabel="Embroidery techniques"
+          speed={0.32}
+        >
           {EMBROIDERIES.map((item) => {
             const Icon = LucideIcons[item.icon] || LucideIcons.Sparkles;
             return (
               <StaggerItem key={item.name}>
-                <article className="group glass-dark rounded-2xl p-6 h-full hover:border-gold/40 transition-all duration-300 hover:-translate-y-1 cursor-default">
+                <article className="group glass-dark rounded-2xl p-6 h-full min-h-[180px] hover:border-gold/40 transition-all duration-300 hover:-translate-y-1 cursor-default">
                   <div className="w-10 h-10 rounded-xl bg-gold/15 flex items-center justify-center mb-4 group-hover:bg-gold/25 transition-colors">
                     <Icon className="w-5 h-5 text-gold-light" />
                   </div>
@@ -30,7 +38,7 @@ export default function Embroidery() {
               </StaggerItem>
             );
           })}
-        </StaggerContainer>
+        </MobileAutoSlider>
       </div>
     </section>
   );

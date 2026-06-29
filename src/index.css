@@ -80,6 +80,15 @@
   .text-gradient-gold {
     @apply bg-gradient-to-r from-gold via-gold-light to-rose-gold bg-clip-text text-transparent;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (pointer: fine) {

@@ -3,7 +3,8 @@ import { COLLECTIONS } from '../../data/content';
 import { PLACEHOLDER_PALETTES } from '../../data/images';
 import SectionHeader from '../ui/SectionHeader';
 import SmartImage from '../ui/SmartImage';
-import { StaggerContainer, StaggerItem } from '../ui/Motion';
+import MobileAutoSlider from '../ui/MobileAutoSlider';
+import { StaggerItem } from '../ui/Motion';
 
 export default function Collections() {
   return (
@@ -16,7 +17,13 @@ export default function Collections() {
           subtitle="From bridal grandeur to everyday chic, explore collections designed to celebrate every woman, every occasion."
         />
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-14">
+        <MobileAutoSlider
+          desktopClassName="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-14"
+          itemClassName="shrink-0 w-[80vw] max-w-[300px] snap-start"
+          fadeFrom="white"
+          ariaLabel="Our collections"
+          speed={0.38}
+        >
           {COLLECTIONS.map((col, i) => (
             <StaggerItem key={col.title}>
               <article className="group relative h-72 sm:h-80 rounded-3xl overflow-hidden cursor-pointer focus-within:ring-2 focus-within:ring-gold shadow-md hover:shadow-luxury transition-shadow duration-500">
@@ -36,17 +43,17 @@ export default function Collections() {
                     {col.tag}
                   </span>
                   <h3 className="font-serif text-2xl text-cream mb-2 drop-shadow-md">{col.title}</h3>
-                  <p className="text-sm text-cream/75 leading-relaxed font-light max-h-0 opacity-0 group-hover:max-h-24 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                  <p className="text-sm text-cream/75 leading-relaxed font-light line-clamp-3 lg:max-h-0 lg:opacity-0 lg:group-hover:max-h-24 lg:group-hover:opacity-100 transition-all duration-500 overflow-hidden">
                     {col.desc}
                   </p>
-                  <span className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-gold-light mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden lg:inline-flex items-center gap-2 text-xs tracking-widest uppercase text-gold-light mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Explore <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </article>
             </StaggerItem>
           ))}
-        </StaggerContainer>
+        </MobileAutoSlider>
       </div>
     </section>
   );
