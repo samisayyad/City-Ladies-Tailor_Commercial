@@ -3,19 +3,55 @@ import { ChevronDown, Scissors, Crown, Sparkles, Ruler } from 'lucide-react';
 import { HERO_CARDS } from '../../data/content';
 import { IMAGES } from '../../data/images';
 import Button from '../ui/Button';
+import ScrollExpandMedia from '../ui/ScrollExpandMedia';
 import { useReducedMotion } from '../../hooks/useScrollPosition';
 
 const iconMap = { Scissors, Crown, Sparkles, Ruler };
 
-const particles = Array.from({ length: 12 }, (_, i) => ({
+const particles = Array.from({ length: 18 }, (_, i) => ({
   id: i,
-  left: `${10 + (i * 7) % 80}%`,
-  top: `${20 + (i * 11) % 60}%`,
-  delay: i * 0.4,
-  duration: 6 + (i % 4),
+  left: `${8 + (i * 5.5) % 84}%`,
+  top: `${15 + (i * 9) % 70}%`,
+  delay: i * 0.35,
+  duration: 5 + (i % 5),
+  size: i % 3 === 0 ? 'w-1 h-1' : 'w-0.5 h-0.5',
+  opacity: 0.5 + (i % 4) * 0.15,
 }));
 
-export default function Hero() {
+function ParticleField() {
+  return (
+    <>
+      {particles.map((p) => (
+        <motion.span
+          key={p.id}
+          className={`absolute ${p.size} bg-gold rounded-full pointer-events-none z-[6]`}
+          style={{ left: p.left, top: p.top }}
+          animate={{
+            y: [-20, -120 - (p.id % 3) * 30],
+            x: [0, (p.id % 2 === 0 ? 1 : -1) * (8 + (p.id % 4) * 4), 0],
+            opacity: [0, p.opacity, 0],
+          }}
+          transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: 'easeOut' }}
+          aria-hidden="true"
+        />
+      ))}
+      <motion.div
+        className="absolute top-[12%] right-[15%] w-32 h-32 rounded-full border border-gold/10 pointer-events-none z-[2]"
+        animate={{ rotate: 360, scale: [1, 1.05, 1] }}
+        transition={{ rotate: { duration: 25, repeat: Infinity, ease: 'linear' }, scale: { duration: 6, repeat: Infinity } }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className="absolute bottom-[18%] left-[12%] w-20 h-20 rounded-full border border-gold/15 pointer-events-none z-[2]"
+        animate={{ rotate: -360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        aria-hidden="true"
+      />
+    </>
+  );
+}
+
+function HeroStatic() {
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   const bgY = useTransform(scrollY, [0, 600], [0, reduced ? 0 : 80]);
@@ -138,5 +174,91 @@ export default function Hero() {
         <ChevronDown className="w-4 h-4" />
       </motion.a>
     </section>
+  );
+}
+
+function HeroExpandedContent() {
+  return (
+    <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center pt-8 md:pt-12">
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.1 }}
+    >
+      <p className="text-[clamp(0.875rem,1.4vw,1.0625rem)] text-cream/75 leading-relaxed font-light max-w-lg mb-8">
+        From designer blouses to bridal wear, traditional outfits, western dresses, and premium
+        embroidery — every stitch reflects craftsmanship, perfection, and elegance.
+      </p>
+      <div className="flex flex-wrap gap-4">
+        <Button href="#booking" icon>
+          Book Now
+        </Button>
+        <Button href="#collections" variant="secondary">
+          Explore Collection
+        </Button>
+      </div>
+    </motion.div>
+
+    <motion.div
+      className="flex justify-center items-center relative"
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.25 }}
+    >
+      <div className="grid grid-cols-2 gap-4 w-full max-w-[380px]">
+        {HERO_CARDS.map((card, i) => {
+          const Icon = iconMap[card.icon];
+          return (
+            <motion.div
+              key={card.title}
+              className="glass-dark rounded-3xl p-5 relative overflow-hidden cursor-default"
+              animate={{ y: [0, -8] }}
+              transition={{ duration: 3 + i * 0.5, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+              whileHover={{ scale: 1.02, y: -4 }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-light to-transparent" />
+              <div className="w-10 h-10 gradient-gold rounded-lg flex items-center justify-center mb-3.5">
+                {Icon && <Icon className="w-5 h-5 text-white" />}
+              </div>
+              <h3 className="font-serif text-base font-medium text-cream mb-1.5 tracking-wide">{card.title}</h3>
+              <p className="text-xs text-beige/65 leading-relaxed font-light">{card.desc}</p>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <motion.div
+        className="absolute -top-4 -right-4 text-gold/40"
+        animate={{ rotate: [0, 15, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+        aria-hidden="true"
+      >
+        <Scissors className="w-8 h-8" />
+      </motion.div>
+    </motion.div>
+    </div>
+  );
+}
+
+export default function Hero() {
+  const reduced = useReducedMotion();
+
+  if (reduced) {
+    return <HeroStatic />;
+  }
+
+  return (
+    <ScrollExpandMedia
+      mediaType="image"
+      mediaSrc={IMAGES.collections[0]}
+      bgImageSrc={IMAGES.about.main}
+      title="Tailored Elegance Crafted for You"
+      date="Premium Tailoring Boutique · Est. 2009"
+      scrollToExpand="Scroll to explore"
+      textBlend
+      overlay={<ParticleField />}
+    >
+      <HeroExpandedContent />
+    </ScrollExpandMedia>
   );
 }

@@ -6,6 +6,7 @@ export const IMAGES = {
   about: {
     main: '/images/about/main.jpg',
     detail: '/images/about/detail.jpg',
+    founder: '/images/about/founder.jpg',
   },
   collections: [
     '/images/collections/bridal.jpg',
